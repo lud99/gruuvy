@@ -1,0 +1,18 @@
+{
+  "name": "gruuvy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev": "nodemon main",
+    "start": "node main"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "youtube-mp3-downloader": "^0.7.7"
+  }
+}
