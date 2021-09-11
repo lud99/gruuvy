@@ -9,10 +9,12 @@ dotenv.config({ path: "./secret.env" });
 dotenv.config({ path: "./config.env" });
 
 const Queue = require("./Queue")
+const playToVoiceChannel = require("./playToVoiceChannel")
 
 const addToQueue = require("./commands/addToQueue");
 const leave = require("./commands/leave");
 const skip = require("./commands/skip");
+const back = require("./commands/back");
 const clearQueue = require("./commands/clearQueue");
 const cancelDownload = require("./commands/cancelDownload");
 const removeFromQueue = require("./commands/removeFromQueue");
@@ -33,26 +35,44 @@ client.on('message', message => {
 
     if (!message.content.startsWith(prefix)) return;
 
-    if (command === "leave") {
+    if (command === "leave" ||  command === "stop") {
         leave(message, args);
     }
-    if (command === "queue") {
+    else if (command === "queue") {
         addToQueue(message, args);
     }
-    if (command === "skip") {
+    else if (command === "skip") {
         skip(message, args);
     }
-    if (command === "clear") {
+    else if (command === "back") {
+        back(message, args);
+    }
+    else if (command === "pause") {
+        Queue.isPaused = true;
+        playToVoiceChannel.voiceDispatcher().pause();
+        message.channel.send(":pause_button:  Resumed song");
+    }
+    else if (command === "resume") {
+        Queue.isPaused = false;
+        playToVoiceChannel.voiceDispatcher().resume();
+        message.channel.send(":play_pause: Resumed song");
+    }
+    else if (command === "loop") {
+        skip(message, args);
+    }
+    else if (command === "clear") {
         clearQueue(message, args);
     }
-    if (command === "cancel") {
+    else if (command === "cancel") {
         cancelDownload(message, args);
     }
-    if (command === "remove") {
+    else if (command === "remove") {
         removeFromQueue(message, args);
     }
-    if (command === "queuepos") {
+    else if (command === "queuepos") {
         message.channel.send(Queue.getPosition());
+    } else {
+        message.channel.send(":interrobang: Unknown command");
     }
 });
 
@@ -60,9 +80,9 @@ client.login(process.env.TOKEN);
 
 /* 
 todo
-dont leave when loading next song
-auto play new song if at the end of the queue, if a new song is added
-delete temp audio files
+dont leave when loading next song - done
+auto play new song if at the end of the queue, if a new song is added - done
+delete temp audio files - done
 looping
 handle canceling a bit better
 

@@ -7,17 +7,17 @@ const Utils = require("../utils");
 module.exports = async (message, arg) => {
     const queueNr = parseInt(arg) - 1;
 
-    if (isNaN(queueNr)) return message.channel.send("Invalid queue entry specified, it needs to be a number");
+    if (isNaN(queueNr)) return message.channel.send(":red_circle: Invalid queue entry specified, it needs to be a number");
 
     const currentQueuePos = Queue.getPosition();
 
     if (!Queue.removeFromQueueByIndex(queueNr))
-        return message.channel.send("Invalid queue entry specified, it doesn't exist");
+        return message.channel.send(":red_circle: Invalid queue entry specified, it doesn't exist");
 
     if (Queue.getQueue().length == 0) {
         playToVoiceChannel.voiceChannel().leave();
 
-        message.channel.send("All songs have been removed, the queue is empty");
+        message.channel.send(":ballot_box_with_check: All songs have been removed, the queue is empty");
     } else {
         await Utils.sendQueueEmbed(message.channel);
     }

@@ -45,6 +45,14 @@ module.exports.skip = () => {
     return true;
 }
 
+module.exports.back = () => {
+    if (currentPosition <= 0)
+        return false;
+
+    currentPosition--;
+    return true;
+}
+
 module.exports.getCurrentEntry = () => {
     if (queue.length == 0) return;
     if (currentPosition < 0 || currentPosition >= queue.length)
@@ -53,5 +61,6 @@ module.exports.getCurrentEntry = () => {
     return queue[currentPosition];
 }
 
-module.exports.isLoadingSong = false;
+module.exports.isPaused = false;
+module.exports.isFinished = false;
 module.exports.maxSongDurationMinutes = 30; 

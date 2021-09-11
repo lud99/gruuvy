@@ -117,8 +117,12 @@ class Utils {
        
         const songs = Queue.getQueue().map((entry, i) => {
             var title = entry.title;
-            if (i == Queue.getPosition())
-                title = `(Playing) ` + title;
+            if (i == Queue.getPosition()) {
+                if (!entry.isFinished && entry.isPaused)
+                    title = `(Paused) ` + title;
+                else
+                    title = "(Playing) " + title;
+            }
             else if (i == Queue.getPosition() + 1)
                 title = `(Next) ` + title;
             else
@@ -131,10 +135,17 @@ class Utils {
         });
 
         const current = Queue.getCurrentEntry();
-        if (!current) return channel.send("No current queue entry");
+        if (!current) return channel.send(":interrobang: No current queue entry");
+
+        var state = "Playing";
+        if (Queue.isPaused) 
+            state = "Paused";
+        else if (Queue.isFinished) 
+            state = "Finished";
 
         const embed = new MessageEmbed()
             .setColor('#0099ff')
+            .setAuthor(state)
             .setTitle(`Queued songs (${Queue.getQueue().length})`)
             .addFields(songs)
             .setImage(current.thumbnail.url)
@@ -144,7 +155,7 @@ class Utils {
         return true;
     }
 
-    static async sendSingleSongEmblem(channel, video, isSucess) {    
+    static async sendSingleSongEmblem(channel, video) {    
         var success = false;
 
         const sendEmblem = async () => {
