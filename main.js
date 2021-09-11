@@ -19,16 +19,44 @@ const clearQueue = require("./commands/clearQueue");
 const cancelDownload = require("./commands/cancelDownload");
 const removeFromQueue = require("./commands/removeFromQueue");
 
-const prefix = 'gr';
+const prefix = 'gr ';
 
 client.once('ready', () => {
     console.log('Gruuvy is online!');
 });
 
+const generateHelp = () => {
+    const command = (cmd, description, args = "", exampleArgs = "") => {
+        if (cmd.split("|").length > 1)
+            var exampleCmd = cmd.split("|")[0];
+        else
+            var exampleCmd = cmd;
+
+        return `\`\`\`${prefix}${cmd}${args ? ` <${(typeof args == "string" ? args : args.join(", "))}>` : ""}, example: ${prefix}${exampleCmd} ${exampleArgs}\`\`\`${description}\n\n`;
+    }
+    
+    var s = command("", "Adds a song to the end of the queue", ["Video to search for", "Video url", "Video id"], "among us drip remix");
+    s += command("leave | stop", "Leaves the current channel and cleares the song queue");
+    s += command("queue", "Displays all the songs in the queue");
+    s += command("next", "Skips to the next song in the queue");
+    s += command("skip", "Skips to a song in the queue", ["Song position in queue"], "3");
+    s += command("back", "Goes back the previous song in the queue");
+    s += command("pause", "Pauses the playback");
+    s += command("resume", "Resumes the playback");
+    s += command("clear", "Clears the entire queue of songs");
+    s += command("remove", "Removes a specific song from the queue (The first song is at position 1)", "Song position in queue", "1");
+    s += command("help", "duh");
+
+    return s;
+}
+
 client.on('message', message => {
     if (message.author.bot) return;
 
-    var args = message.content.slice(prefix.length + 1).split(" ");
+    var args = message.content.slice(prefix.length).split(" ");
+
+    var everythingAfterArgs = args.join(" ");
+
     const command = args.shift();
 
     args = args.join(" ");
@@ -41,7 +69,7 @@ client.on('message', message => {
     else if (command === "queue") {
         addToQueue(message, args);
     }
-    else if (command === "skip") {
+    else if (command === "skip" || command === "next") {
         skip(message, args);
     }
     else if (command === "back") {
@@ -49,12 +77,14 @@ client.on('message', message => {
     }
     else if (command === "pause") {
         Queue.isPaused = true;
-        playToVoiceChannel.voiceDispatcher().pause();
-        message.channel.send(":pause_button:  Resumed song");
+        if (playToVoiceChannel.voiceDispatcher())
+            playToVoiceChannel.voiceDispatcher().pause();
+        message.channel.send(":pause_button: Paused song");
     }
     else if (command === "resume") {
         Queue.isPaused = false;
-        playToVoiceChannel.voiceDispatcher().resume();
+        if (playToVoiceChannel.voiceDispatcher())
+            playToVoiceChannel.voiceDispatcher().resume();
         message.channel.send(":play_pause: Resumed song");
     }
     else if (command === "loop") {
@@ -64,15 +94,20 @@ client.on('message', message => {
         clearQueue(message, args);
     }
     else if (command === "cancel") {
-        cancelDownload(message, args);
+        //cancelDownload(message, args);
     }
     else if (command === "remove") {
         removeFromQueue(message, args);
     }
     else if (command === "queuepos") {
         message.channel.send(Queue.getPosition());
+    } else if (command === "help") {
+
+        message.channel.send(generateHelp());
     } else {
-        message.channel.send(":interrobang: Unknown command");
+        // interpret it as a song
+        addToQueue(message, everythingAfterArgs);
+        //message.channel.send(":interrobang: Unknown command");
     }
 });
 

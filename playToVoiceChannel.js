@@ -7,6 +7,7 @@ var currentVoiceChannel;
 const ytdl = require("ytdl-core")
 
 var isLoadingSong = false;
+var ingoreStopSpeaking = false;
 
 const playToVoiceChannel = async (commandChannel, voiceChannel) => {
     const video = Queue.getCurrentEntry();
@@ -56,7 +57,10 @@ const playToVoiceChannel = async (commandChannel, voiceChannel) => {
 
         voiceDispatcher.on("speaking", (speaking) => {
             if (speaking || Queue.isPaused) return;
-            
+
+            if (ingoreStopSpeaking)
+                return ingoreStopSpeaking = false;
+
             console.log("Song finished playing");
             const couldSkipToNextSong = Queue.skip();
             if (!couldSkipToNextSong) {
@@ -69,6 +73,8 @@ const playToVoiceChannel = async (commandChannel, voiceChannel) => {
     }).catch(err => console.log(err));
 };
 
+module.exports.getIngoreStopSpeaking = () => ingoreStopSpeaking;
+module.exports.setIngoreStopSpeaking = flag => ingoreStopSpeaking = flag;
 module.exports.play = playToVoiceChannel;
 module.exports.isLoadingSong = isLoadingSong;
 module.exports.voiceDispatcher = () => voiceDispatcher;

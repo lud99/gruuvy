@@ -1,5 +1,7 @@
 const fetch = require("node-fetch");
 
+const moment = require("moment")
+
 const getChannelDataPure = async (channelId) => {
     const youtubeKey = process.env.YOUTUBE_KEY;
     const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id+${channelId}&fields=items%2Fsnippet%2Fthumbnails&key=${youtubeKey}`, {
@@ -44,17 +46,22 @@ const getVideoDetails = async (videoId) => {
     const thumbnail = videoData.items[0].snippet.thumbnails.medium;
 
     // Get video duration in minutes
-    const durationString = videoData.items[0].contentDetails.duration
-    const arrOfTime = durationString.replace("PT", "").replace("H", " ").replace("M", " ").replace("S", "").split(" ");
+    const durationString = videoData.items[0].contentDetails.duration;
 
-    // Minutes, seconds
-    var duration = 0;
-    if (arrOfTime.length === 1) // Seconds
-        duration = parseInt(arrOfTime[0]) / 60;
-    else if (arrOfTime.length === 2) // Minutes, seconds
-        duration = parseInt(arrOfTime[0]) + parseInt(arrOfTime[1]) / 60;
-    else if (arrOfTime.length === 3) // Hours, minutes, seconds
-        duration = parseInt(arrOfTime[0]) * 60 + parseInt(arrOfTime[1]) + parseInt(arrOfTime[2]) / 60;
+    const duration = moment.duration(durationString).asMilliseconds() / 1000 / 60;
+
+    // const hours = parseInt(durationString.replace("PT", ""));
+
+    // const arrOfTime = durationString.replace("PT", "").replace("H", " ").replace("M", " ").replace("S", "").split(" ");
+
+    // // Minutes, seconds
+    // var duration = 0;
+    // if (arrOfTime.length === 1) // Seconds
+    //     duration = parseInt(arrOfTime[0]) / 60;
+    // else if (arrOfTime.length === 2) // Minutes, seconds
+    //     duration = parseInt(arrOfTime[0]) + parseInt(arrOfTime[1]) / 60;
+    // else if (arrOfTime.length === 3) // Hours, minutes, seconds
+    //     duration = parseInt(arrOfTime[0]) * 60 + parseInt(arrOfTime[1]) + parseInt(arrOfTime[2]) / 60;
 
     return {
         id: videoId,

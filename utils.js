@@ -119,7 +119,7 @@ class Utils {
         const songs = Queue.getQueue().map((entry, i) => {
             var title = entry.title;
             if (i == Queue.getPosition()) {
-                if (!entry.isFinished && entry.isPaused)
+                if (!Queue.isFinished && Queue.isPaused)
                     title = `(Paused) ` + title;
                 else
                     title = "(Playing) " + title;

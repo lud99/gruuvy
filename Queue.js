@@ -37,19 +37,36 @@ module.exports.removeFromQueueByIndex = index => {
     return true;
 }
 
-module.exports.skip = () => {
-    if (currentPosition >= queue.length - 1)
+module.exports.skip = (nr = 1) => {
+    if (currentPosition >= queue.length - nr)
         return false;
 
-    currentPosition++;
+    module.exports.isPaused = false;
+    module.exports.isFinished = false;
+
+    currentPosition += nr;
     return true;
 }
 
-module.exports.back = () => {
-    if (currentPosition <= 0)
+module.exports.skipTo = (nr = 0) => {
+    if (nr >= queue.length)
         return false;
 
-    currentPosition--;
+    module.exports.isPaused = false;
+    module.exports.isFinished = false;
+
+    currentPosition = nr;
+    return true;
+}
+
+module.exports.back = (nr = 1) => {
+    if (currentPosition - nr < 0)
+        return false;
+
+    module.exports.isPaused = false;
+    module.exports.isFinished = false;
+
+    currentPosition -= nr;
     return true;
 }
 

@@ -12,6 +12,7 @@ module.exports = async (message, arg) => {
     if (!success)
         return message.channel.send(":red_circle: Can't go back, at the start of the queue");
 
+    playToVoiceChannel.setIngoreStopSpeaking(true);
     playToVoiceChannel.voiceDispatcher().pause();
 
     await Utils.sendQueueEmbed(message.channel);
