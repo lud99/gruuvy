@@ -10,10 +10,16 @@ const playToVoiceChannel = require("../playToVoiceChannel")
 module.exports = async (message, args) => {
     var queueWasFinished = false;
 
+    console.log(args, args.length)
+
+    const voiceChannel = message.member.voice.channel;
+    if (!voiceChannel && args)
+        return message.channel.send(":microphone: You need to be in a voice channel")
+
     if (args) {
         const videoDetails = await Utils.getVideoDetailsFromCommand(args);
         if (!videoDetails)
-            return message.channel.send(":cry: Found no song :cry:");
+            return message.channel.send(":cry: Found no song");
         
         if (Queue.getQueue().length == 0)
             await message.channel.send(`:notes: Found the song **${videoDetails.title}**! It will be played now :notes:`);   
@@ -37,7 +43,6 @@ module.exports = async (message, args) => {
     if (args && (Queue.getQueue().length == 1 || queueWasFinished))
     {
         // Play the song
-        const voiceChannel = message.member.voice.channel;
         playToVoiceChannel.play(message.channel, voiceChannel);
     }
 } 

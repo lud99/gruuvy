@@ -13,7 +13,10 @@ const playToVoiceChannel = async (commandChannel, voiceChannel) => {
     if (!video)
         return commandChannel.send(":interrobang: No song in queue to play");
 
-    const filename = video.videoId + ".mp3";
+    if (!voiceChannel)
+        return commandChannel.send(":microphone: You need to be in a voice channel")
+
+    // const filename = video.videoId + ".mp3";
     // console.log("Fetching video", video.title);
     // try {
     //     isLoadingSong = true;

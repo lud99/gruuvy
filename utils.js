@@ -86,6 +86,7 @@ class Utils {
         // 2. Youtube video title
         else {
             const searchResults = await scrapeResults(arg);
+            if (!searchResults[0]) return;
 
             videoId = searchResults[0].id;
         }
