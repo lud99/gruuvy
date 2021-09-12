@@ -125,7 +125,7 @@ client.on('message', message => {
     }
 });
 
-client.login(process.env.TOKEN);
+client.login(process.env.GRUUVY_BOT_TOKEN);
 
 /* 
 todo
