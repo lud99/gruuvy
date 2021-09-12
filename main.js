@@ -19,6 +19,9 @@ const clearQueue = require("./commands/clearQueue");
 const cancelDownload = require("./commands/cancelDownload");
 const removeFromQueue = require("./commands/removeFromQueue");
 
+var pathToFfmpeg = require('ffmpeg-static');
+console.log(pathToFfmpeg);
+
 const prefix = 'gr ';
 
 client.once('ready', () => {
