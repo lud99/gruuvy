@@ -62,8 +62,19 @@ const playToVoiceChannel = async (commandChannel, voiceChannel) => {
                 return ingoreStopSpeaking = false;
 
             console.log("Song finished playing");
-            const couldSkipToNextSong = Queue.skip();
-            if (!couldSkipToNextSong) {
+
+            var couldSkipToNextSong;
+            if (Queue.loopMode == "none")
+                couldSkipToNextSong = Queue.skip();
+            else if (Queue.loopMode == "track")
+                couldSkipToNextSong = true;
+
+            if (Queue.loopMode != "track" && !couldSkipToNextSong) {
+                if (Queue.loopMode == "queue") {
+                    Queue.skipTo(0);
+                    return playToVoiceChannel(commandChannel, voiceChannel);
+                }
+
                 //voiceChannel.leave();
                 Queue.isFinished = true;
             } else {

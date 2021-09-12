@@ -80,4 +80,5 @@ module.exports.getCurrentEntry = () => {
 
 module.exports.isPaused = false;
 module.exports.isFinished = false;
+module.exports.loopMode = "none";
 module.exports.maxSongDurationMinutes = 30; 

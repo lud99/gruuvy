@@ -43,6 +43,7 @@ const generateHelp = () => {
     s += command("back", "Goes back the previous song in the queue");
     s += command("pause", "Pauses the playback");
     s += command("resume", "Resumes the playback");
+    s += command("loop", "Loops the track, queue or nothing", ["none", "track", "queue"], "track");
     s += command("clear", "Clears the entire queue of songs");
     s += command("remove", "Removes a specific song from the queue (The first song is at position 1)", "Song position in queue", "1");
     s += command("help", "duh");
@@ -88,7 +89,20 @@ client.on('message', message => {
         message.channel.send(":play_pause: Resumed song");
     }
     else if (command === "loop") {
-        skip(message, args);
+        if (args == "none" || args == "track" || args == "queue")
+            Queue.loopMode = args;
+        else
+            return message.channel.send(":red_circle: Invalid argument for looping command");
+
+        if (args == "none")
+        message.channel.send(":repeat_one: Turned off looping");
+        if (args == "track")
+            message.channel.send(":repeat: Looping track");
+        if (args == "queue")
+        message.channel.send(":repeat_one: Looping queue");
+    }
+    else if (command === "loopmode") {
+        message.channel.send(Queue.loopMode);
     }
     else if (command === "clear") {
         clearQueue(message, args);

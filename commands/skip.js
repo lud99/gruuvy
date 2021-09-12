@@ -10,7 +10,6 @@ const playToVoiceChannel = require("../playToVoiceChannel");
 // gr random
 // user info
 // play playlists
-// gr loop
 
 module.exports = async (message, arg) => {
     var queueNr;

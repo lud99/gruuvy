@@ -112,7 +112,7 @@ class Utils {
 
     static async sendQueueEmbed(channel) {
         if (Queue.getQueue().length == 0) {
-            channel.send("There are no songs in the queue. Add songs with ```.queue song name``` or ```.play song name```");
+            channel.send(":handbag: There are no songs in the queue");
             return false;
         }
        
@@ -146,7 +146,7 @@ class Utils {
 
         const embed = new MessageEmbed()
             .setColor('#0099ff')
-            .setAuthor(state)
+            .setAuthor(state + ". Looping: " + Queue.loopMode)
             .setTitle(`Queued songs (${Queue.getQueue().length})`)
             .addFields(songs)
             .setImage(current.thumbnail.url)
