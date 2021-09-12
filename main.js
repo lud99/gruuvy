@@ -3,7 +3,8 @@
 const { Client } = require('discord.js');
 const dotenv = require('dotenv');
 
-const client = new Client()
+const client = new Client();
+const fs = require("fs")
 
 dotenv.config({ path: "./secret.env" });
 dotenv.config({ path: "./config.env" });
