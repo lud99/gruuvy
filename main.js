@@ -19,8 +19,10 @@ const clearQueue = require("./commands/clearQueue");
 const cancelDownload = require("./commands/cancelDownload");
 const removeFromQueue = require("./commands/removeFromQueue");
 
+require("ffmpeg-static/install")
+
 var pathToFfmpeg = require('ffmpeg-static');
-console.log(pathToFfmpeg);
+console.log("FFMPEG PATH", pathToFfmpeg);
 
 const prefix = 'gr ';
 
