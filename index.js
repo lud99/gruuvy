@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 const client = new Client();
 const fs = require("fs")
 
-dotenv.config({ path: "./secret.env" });
+dotenv.config({ path: "./secrets.env" });
 dotenv.config({ path: "./config.env" });
 
 const Queue = require("./Queue")
