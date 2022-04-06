@@ -21,7 +21,7 @@ const cancelDownload = require("./commands/cancelDownload");
 const removeFromQueue = require("./commands/removeFromQueue");
 
 // only install once
-console.log(fs.statSync(require('ffmpeg-static'))
+console.log(fs.statSync(require('ffmpeg-static')));
 if (fs.existsSync(fs.statSync(require('ffmpeg-static')) || !fs.statSync(require('ffmpeg-static')).isFile())) {
     require("ffmpeg-static/install")
 }
