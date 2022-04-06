@@ -4,8 +4,9 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "dev": "nodemon main",
-    "start": "node main"
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "start-linux": "sudo -E nodemon index.js"
   },
   "keywords": [],
   "author": "",
