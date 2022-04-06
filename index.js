@@ -22,7 +22,7 @@ const removeFromQueue = require("./commands/removeFromQueue");
 
 // only install once
 console.log(require('ffmpeg-static'));
-if (fs.existsSync(fs.statSync(require('ffmpeg-static')) || !fs.statSync(require('ffmpeg-static')).isFile())) {
+if (!fs.existsSync(require('ffmpeg-static')) || !fs.statSync(require('ffmpeg-static')).isFile()) {
     require("ffmpeg-static/install")
 }
 
